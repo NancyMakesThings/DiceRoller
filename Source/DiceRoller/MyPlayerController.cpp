@@ -6,19 +6,32 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Dice.h"
-#include "Kismet/KismetMathLibrary.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
 
 AMyPlayerController::AMyPlayerController()
 {
 	// UE_LOG(LogTemp, Warning, TEXT("MyPlayerController Constructor"));
 	PhysicsHandle = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysicsHandle"));
 
+	// Enable mouse events
+	bShowMouseCursor = true;
+	bEnableClickEvents = true;
+	bEnableMouseOverEvents = true;
+
+	// Enable touch events
+	bEnableTouchEvents = true;
+	bEnableTouchOverEvents = true;
 }
 
 // Called when the game starts or when spawned
 void AMyPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// Set input mode and ensure mouse is movable during click
+	FInputModeGameAndUI inputMode;
+	inputMode.SetHideCursorDuringCapture(false);
+	SetInputMode(inputMode);
 	
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 	{
@@ -38,11 +51,17 @@ void AMyPlayerController::Tick(float DeltaTime)
 		DeprojectMousePositionToWorld(MouseLocation, MouseDirection);
 
 		NewDiceLocation = MouseLocation + MouseDirection * OriginalDistanceToObject;
-		NewDiceLocation.Z = GrabLocationZ;
+		NewDiceLocation.Z = GrabLocationZ; // Use fixed grab Z location
 
 		PhysicsHandle->SetTargetLocation(NewDiceLocation);
+		// UE_LOG(LogTemp, Warning, TEXT("IA_DiceMove started %s"), *NewDiceLocation.ToString());
 	}
 
+}
+
+UPhysicsHandleComponent* AMyPlayerController::GetPhysicsHandle() const
+{
+	return PhysicsHandle;
 }
 
 void AMyPlayerController::SetupInputComponent()
@@ -72,12 +91,13 @@ void AMyPlayerController::DiceDrag()
 void AMyPlayerController::DiceDrop()
 {
 	UE_LOG(LogTemp, Warning, TEXT("IA_DiceMove completed"));
-	
+
 	if (PhysicsHandle->GrabbedComponent != NULL)
 	{
-		FVector Impulse = FVector(UKismetMathLibrary::RandomFloatInRange(-1, 1), UKismetMathLibrary::RandomFloatInRange(-1, 1), UKismetMathLibrary::RandomFloatInRange(-1, 1));
-		Impulse = Impulse * AngularImpulseMagnitude;
-		PhysicsHandle->GrabbedComponent->AddAngularImpulseInDegrees(Impulse, NAME_None, true);
+		if (ADice* Dice = Cast<ADice>(PhysicsHandle->GrabbedComponent->GetOwner()))
+		{
+			Dice->RandomFall();
+		}
 		PhysicsHandle->ReleaseComponent();
 	}
 }

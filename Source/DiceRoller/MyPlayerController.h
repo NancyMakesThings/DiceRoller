@@ -4,12 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "InputActionValue.h"
 #include "MyPlayerController.generated.h"
 
 class UInputMappingContext;
 class UInputAction;
+class UPhysicsHandleComponent;
 
 /**
  * 
@@ -24,6 +24,9 @@ public:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
+	UFUNCTION(BlueprintCallable, Category = "Components")
+	UPhysicsHandleComponent* GetPhysicsHandle() const;
 
 protected:
 	// Called when the game starts or when spawned
@@ -39,7 +42,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputAction* DiceMoveAction;
 
-
 	// Update dice location
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float GrabLocationZ = 800;
@@ -47,9 +49,4 @@ protected:
 	float OriginalDistanceToObject;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	UPhysicsHandleComponent* PhysicsHandle;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	float AngularImpulseMagnitude = 360;
-
-
 };
