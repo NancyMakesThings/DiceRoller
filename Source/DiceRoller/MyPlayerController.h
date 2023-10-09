@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "InputActionValue.h"
 #include "MyPlayerController.generated.h"
 
 class UInputMappingContext;
@@ -41,6 +40,9 @@ protected:
 	UInputMappingContext* DiceRollerMappingContext;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputAction* DiceMoveAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	UInputAction* CameraZoomAction;
 
 	// Update dice location
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)

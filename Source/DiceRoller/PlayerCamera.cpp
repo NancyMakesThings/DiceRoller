@@ -11,6 +11,13 @@ APlayerCamera::APlayerCamera()
 
 }
 
+void APlayerCamera::Zoom(const FInputActionValue& Value)
+{
+	const FVector2D CurrentValue = Value.Get<FVector2D>();
+	UE_LOG(LogTemp, Warning, TEXT("IA_CameraZoom X: %d"), CurrentValue.X);
+	UE_LOG(LogTemp, Warning, TEXT("IA_CameraZoom Y: %d"), CurrentValue.Y);
+}
+
 // Called when the game starts or when spawned
 void APlayerCamera::BeginPlay()
 {

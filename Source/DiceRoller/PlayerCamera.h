@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "InputActionValue.h"
 #include "PlayerCamera.generated.h"
 
 UCLASS()
@@ -14,6 +15,8 @@ class DICEROLLER_API APlayerCamera : public APawn
 public:
 	// Sets default values for this pawn's properties
 	APlayerCamera();
+
+	void Zoom(const FInputActionValue& Value);
 
 protected:
 	// Called when the game starts or when spawned

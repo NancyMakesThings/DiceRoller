@@ -7,6 +7,7 @@
 #include "EnhancedInputComponent.h"
 #include "Dice.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h"
+#include "PlayerCamera.h"
 
 AMyPlayerController::AMyPlayerController()
 {
@@ -66,15 +67,30 @@ UPhysicsHandleComponent* AMyPlayerController::GetPhysicsHandle() const
 
 void AMyPlayerController::SetupInputComponent()
 {
+	UE_LOG(LogTemp, Warning, TEXT("AMyPlayerController::SetupInputComponent() Started"));
+
 	Super::SetupInputComponent();
-	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent)) {
+	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent)) 
+	{
 		EnhancedInputComponent->BindAction(DiceMoveAction, ETriggerEvent::Started, this, &AMyPlayerController::DiceDrag);
 		EnhancedInputComponent->BindAction(DiceMoveAction, ETriggerEvent::Completed, this, &AMyPlayerController::DiceDrop);
-	}	
+
+		// Bind camera input
+		if (APlayerCamera* Camera = Cast<APlayerCamera>(GetPawn()))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("AMyPlayerController::SetupInputComponent() Bind Camera Input"));
+			EnhancedInputComponent->BindAction(CameraZoomAction, ETriggerEvent::Triggered, Camera, &APlayerCamera::Zoom);
+		}
+		else if (GetPawn() == nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("AMyPlayerController::SetupInputComponent() No Pawn "));
+		}
+	}
 }
 
 void AMyPlayerController::DiceDrag()
 {
+	// Allow dice to be moved with mouse via physics handle
 	UE_LOG(LogTemp, Warning, TEXT("IA_DiceMove started"));
 
 	FHitResult HitResult;
