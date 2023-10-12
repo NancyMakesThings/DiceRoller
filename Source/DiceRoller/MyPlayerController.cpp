@@ -37,6 +37,7 @@ void AMyPlayerController::BeginPlay()
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 	{
 		Subsystem->AddMappingContext(DiceRollerMappingContext,0);
+		//Subsystem->AddMappingContext(CameraMappingContext, 1);
 	}
 }
 
@@ -74,17 +75,10 @@ void AMyPlayerController::SetupInputComponent()
 	{
 		EnhancedInputComponent->BindAction(DiceMoveAction, ETriggerEvent::Started, this, &AMyPlayerController::DiceDrag);
 		EnhancedInputComponent->BindAction(DiceMoveAction, ETriggerEvent::Completed, this, &AMyPlayerController::DiceDrop);
-
-		// Bind camera input
-		if (APlayerCamera* Camera = Cast<APlayerCamera>(GetPawn()))
-		{
-			UE_LOG(LogTemp, Warning, TEXT("AMyPlayerController::SetupInputComponent() Bind Camera Input"));
-			EnhancedInputComponent->BindAction(CameraZoomAction, ETriggerEvent::Triggered, Camera, &APlayerCamera::Zoom);
-		}
-		else if (GetPawn() == nullptr)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("AMyPlayerController::SetupInputComponent() No Pawn "));
-		}
+		EnhancedInputComponent->BindAction(CameraZoomAction, ETriggerEvent::Triggered, this, &AMyPlayerController::PlayerCameraZoom);
+		EnhancedInputComponent->BindAction(CameraRotateAction, ETriggerEvent::Triggered, this, &AMyPlayerController::PlayerCameraRotate);
+		EnhancedInputComponent->BindAction(CameraPanAction, ETriggerEvent::Started, this, &AMyPlayerController::PlayerCameraPanStart);
+		EnhancedInputComponent->BindAction(CameraPanAction, ETriggerEvent::Completed, this, &AMyPlayerController::PlayerCameraPanStop);
 	}
 }
 
@@ -95,8 +89,7 @@ void AMyPlayerController::DiceDrag()
 
 	FHitResult HitResult;
 	GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_Visibility), true, HitResult);
-	ADice* Dice = Cast<ADice>(HitResult.GetActor());
-	if (Dice != nullptr)
+	if (ADice* Dice = Cast<ADice>(HitResult.GetActor()))
 	{
 		OriginalDistanceToObject = HitResult.Distance;
 		UPrimitiveComponent* HitComponent = HitResult.GetComponent();
@@ -115,5 +108,37 @@ void AMyPlayerController::DiceDrop()
 			Dice->RandomFall();
 		}
 		PhysicsHandle->ReleaseComponent();
+	}
+}
+
+void AMyPlayerController::PlayerCameraZoom(const FInputActionValue& Value)
+{
+	if (APlayerCamera* PlayerCamera = Cast<APlayerCamera>(GetPawn()))
+	{
+		PlayerCamera->Zoom(Value);
+	}
+}
+
+void AMyPlayerController::PlayerCameraRotate(const FInputActionValue& Value)
+{
+	if (APlayerCamera* PlayerCamera = Cast<APlayerCamera>(GetPawn()))
+	{
+		PlayerCamera->Rotate(Value);
+	}
+}
+
+void AMyPlayerController::PlayerCameraPanStart(const FInputActionValue& Value)
+{
+	if (APlayerCamera* PlayerCamera = Cast<APlayerCamera>(GetPawn()))
+	{
+		PlayerCamera->PanStart();
+	}
+}
+
+void AMyPlayerController::PlayerCameraPanStop(const FInputActionValue& Value)
+{
+	if (APlayerCamera* PlayerCamera = Cast<APlayerCamera>(GetPawn()))
+	{
+		PlayerCamera->PanStop();
 	}
 }

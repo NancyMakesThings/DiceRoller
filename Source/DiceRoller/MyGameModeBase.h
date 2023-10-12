@@ -10,7 +10,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class DICEROLLER_API AMyGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
