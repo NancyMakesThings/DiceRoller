@@ -37,7 +37,6 @@ void AMyPlayerController::BeginPlay()
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 	{
 		Subsystem->AddMappingContext(DiceRollerMappingContext,0);
-		//Subsystem->AddMappingContext(CameraMappingContext, 1);
 	}
 }
 
@@ -66,6 +65,16 @@ UPhysicsHandleComponent* AMyPlayerController::GetPhysicsHandle() const
 	return PhysicsHandle;
 }
 
+UInputMappingContext* AMyPlayerController::GetDiceMappingContext() const
+{
+	return DiceRollerMappingContext;
+}
+
+UInputMappingContext* AMyPlayerController::GetCameraMappingContext() const
+{
+	return CameraMappingContext;
+}
+
 void AMyPlayerController::SetupInputComponent()
 {
 	UE_LOG(LogTemp, Warning, TEXT("AMyPlayerController::SetupInputComponent() Started"));
@@ -79,12 +88,13 @@ void AMyPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(CameraRotateAction, ETriggerEvent::Triggered, this, &AMyPlayerController::PlayerCameraRotate);
 		EnhancedInputComponent->BindAction(CameraPanAction, ETriggerEvent::Started, this, &AMyPlayerController::PlayerCameraPanStart);
 		EnhancedInputComponent->BindAction(CameraPanAction, ETriggerEvent::Completed, this, &AMyPlayerController::PlayerCameraPanStop);
+		EnhancedInputComponent->BindAction(CameraCenterAction, ETriggerEvent::Triggered, this, &AMyPlayerController::PlayerCameraCenter);
 	}
 }
 
+// Allow dice to be moved with mouse via physics handle
 void AMyPlayerController::DiceDrag()
 {
-	// Allow dice to be moved with mouse via physics handle
 	UE_LOG(LogTemp, Warning, TEXT("IA_DiceMove started"));
 
 	FHitResult HitResult;
@@ -127,7 +137,7 @@ void AMyPlayerController::PlayerCameraRotate(const FInputActionValue& Value)
 	}
 }
 
-void AMyPlayerController::PlayerCameraPanStart(const FInputActionValue& Value)
+void AMyPlayerController::PlayerCameraPanStart()
 {
 	if (APlayerCamera* PlayerCamera = Cast<APlayerCamera>(GetPawn()))
 	{
@@ -135,10 +145,25 @@ void AMyPlayerController::PlayerCameraPanStart(const FInputActionValue& Value)
 	}
 }
 
-void AMyPlayerController::PlayerCameraPanStop(const FInputActionValue& Value)
+void AMyPlayerController::PlayerCameraPanStop()
 {
 	if (APlayerCamera* PlayerCamera = Cast<APlayerCamera>(GetPawn()))
 	{
 		PlayerCamera->PanStop();
+	}
+}
+
+// Center camera on clicked dice location
+void AMyPlayerController::PlayerCameraCenter()
+{
+	FHitResult HitResult;
+	GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_Visibility), true, HitResult);
+	if (ADice* Dice = Cast<ADice>(HitResult.GetActor()))
+	{
+		FVector TargetLocation = HitResult.GetComponent()->GetCenterOfMass();
+		if (APlayerCamera* PlayerCamera = Cast<APlayerCamera>(GetPawn()))
+		{
+			PlayerCamera->Center(TargetLocation);
+		}
 	}
 }

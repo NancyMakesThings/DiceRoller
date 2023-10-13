@@ -28,8 +28,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Components")
 	UPhysicsHandleComponent* GetPhysicsHandle() const;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bCameraMode = false;
+	UInputMappingContext* GetDiceMappingContext() const;
+	UInputMappingContext* GetCameraMappingContext() const;
 
 protected:
 	// Called when the game starts or when spawned
@@ -37,36 +37,43 @@ protected:
 
 	// Input
 	void SetupInputComponent() override;
-	void DiceDrag();
-	void DiceDrop();
 
+	// Dice
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputMappingContext* DiceRollerMappingContext;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputAction* DiceMoveAction;
 
-	// PlayerCamera input and handler functions
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	void DiceDrag();
+	void DiceDrop();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Dice")
+	float GrabLocationZ = 800;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice")
+	float OriginalDistanceToObject;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Dice")
+	UPhysicsHandleComponent* PhysicsHandle;
+
+	// PlayerCamera
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera")
 	UInputMappingContext* CameraMappingContext;
 
 	void PlayerCameraZoom(const FInputActionValue& Value);	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera")
 	UInputAction* CameraZoomAction;
 
 	void PlayerCameraRotate(const FInputActionValue& Value);
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera")
 	UInputAction* CameraRotateAction;
 
-	void PlayerCameraPanStart(const FInputActionValue& Value);
-	void PlayerCameraPanStop(const FInputActionValue& Value);
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	void PlayerCameraPanStart();
+	void PlayerCameraPanStop();
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera")
 	UInputAction* CameraPanAction;
 
-	// Update dice location
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	float GrabLocationZ = 800;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float OriginalDistanceToObject;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
-	UPhysicsHandleComponent* PhysicsHandle;
+	void PlayerCameraCenter();
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera")
+	UInputAction* CameraCenterAction;
+
+
 };

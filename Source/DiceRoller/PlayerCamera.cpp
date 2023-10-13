@@ -12,9 +12,6 @@ APlayerCamera::APlayerCamera()
 	UE_LOG(LogTemp, Warning, TEXT("PlayerCamera Constructor"));
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	bUseControllerRotationPitch = true;
-	bUseControllerRotationRoll = true;
-	bUseControllerRotationYaw = true;
 
 	// Create components
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootSceneComponent"));
@@ -30,6 +27,9 @@ APlayerCamera::APlayerCamera()
 	SpringArmComp->TargetArmLength = StartArmLength;
 	SpringArmComp->bEnableCameraLag = true;
 	SpringArmComp->bDoCollisionTest = false; // may update to true as camera movement is improved
+	bUseControllerRotationPitch = true;
+	bUseControllerRotationRoll = true;
+	bUseControllerRotationYaw = true;
 }
 
 void APlayerCamera::Zoom(const FInputActionValue& Value)
@@ -37,7 +37,6 @@ void APlayerCamera::Zoom(const FInputActionValue& Value)
 	UE_LOG(LogTemp, Warning, TEXT("APlayerCamera::Zoom started"));
 
 	const float CurrentValue = Value.Get<float>();
-	
 	float AddZoom;
 	if (CurrentValue > 0 )
 	{
@@ -47,13 +46,11 @@ void APlayerCamera::Zoom(const FInputActionValue& Value)
 	{
 		AddZoom = -ZoomInterval;
 	}
-
 	SpringArmComp->TargetArmLength = FMath::Clamp(SpringArmComp->TargetArmLength + AddZoom, ArmClampMin, ArmClampMax);
 
 	UE_LOG(LogTemp, Warning, TEXT("APlayerCamera::Zoom Value: %f"), CurrentValue);
 	UE_LOG(LogTemp, Warning, TEXT("APlayerCamera::Zoom TargetZoomDistance: %f"), SpringArmComp->TargetArmLength);
 
-		
 }
 
 void APlayerCamera::Rotate(const FInputActionValue& Value)
@@ -78,6 +75,17 @@ void APlayerCamera::PanStop()
 	}
 }
 
+void APlayerCamera::Center(FVector TargetLocation)
+{
+	SetActorLocation(TargetLocation, true);
+}
+
+void APlayerCamera::Home()
+{
+	SetActorLocation(HomeLocation);
+	GetController()->SetControlRotation(FRotator(0.0f));
+	SpringArmComp->TargetArmLength = StartArmLength;
+}
 
 // Called when the game starts or when spawned
 void APlayerCamera::BeginPlay()
@@ -100,7 +108,8 @@ void APlayerCamera::Tick(float DeltaTime)
 
 		// Undo offset if camera out of bounds
 		FVector CurrentLocation = GetActorLocation();
-		if (CurrentLocation.X >= MaxX || CurrentLocation.X <= MinX || CurrentLocation.Y >= MaxY || CurrentLocation.Y <= MinY)
+		if (CurrentLocation.X >= MaxX || CurrentLocation.X <= MinX || CurrentLocation.Y >= MaxY || CurrentLocation.Y <= MinY 
+			|| CurrentLocation.Z >= MaxZ || CurrentLocation.Z <= MinZ)
 		{
 			AddActorLocalOffset(FVector(-AddOffset.Y, AddOffset.X, 0.0f));
 		}

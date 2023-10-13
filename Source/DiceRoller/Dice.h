@@ -22,7 +22,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice")
-	float AngularImpulseMagnitude = 360;
+	float AngularImpulseMagnitude;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* DiceMesh;

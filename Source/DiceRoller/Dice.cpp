@@ -12,15 +12,15 @@ ADice::ADice()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Dice Constructor"));
 
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
-
+	// Create mesh component and set mesh defaults
 	DiceMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MyDiceMesh"));
 	RootComponent = DiceMesh;
-
 	DiceMesh->SetSimulatePhysics(true);
 	DiceMesh->SetEnableGravity(true);
 
+	// Assign variables
+	PrimaryActorTick.bCanEverTick = false;
+	AngularImpulseMagnitude = 360;
 }
 
 // Called when the game starts or when spawned
@@ -29,7 +29,6 @@ void ADice::BeginPlay()
 	UE_LOG(LogTemp, Warning, TEXT("Dice BeginPlay"));
 
 	Super::BeginPlay();
-
 	RandomFall();
 }
 

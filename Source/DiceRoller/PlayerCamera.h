@@ -20,10 +20,13 @@ public:
 	// Sets default values for this pawn's properties
 	APlayerCamera();
 
+	// Camera actions
 	void Zoom(const FInputActionValue& Value);
 	void Rotate(const FInputActionValue& Value);
 	void PanStart();
 	void PanStop();
+	void Center(FVector TargetLocation);
+	void Home();
 
 protected:
 	// Called when the game starts or when spawned
@@ -39,11 +42,14 @@ protected:
 	// Camera variables
 	const FVector StartLocation = FVector(0.0f, 0.0f, 0.0f); // TODO: change these to defines?
 	const FRotator StartRotation = FRotator(-90.0f, 0.0f, 0.0f);
+	const FVector HomeLocation = FVector(0.0f, 0.0f, 250.0f);
 	const float StartArmLength = 2000.0f;
 	const float MaxX = 2000.0f;
 	const float MinX = -2000.0f;
 	const float MaxY = 2000.0f;
 	const float MinY = -2000.0f;
+	const float MaxZ = 2000.0f;
+	const float MinZ = -2000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float ZoomInterval = 100.0f;
