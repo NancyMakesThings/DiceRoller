@@ -38,6 +38,10 @@ protected:
 	// Input
 	void SetupInputComponent() override;
 
+	// Global
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	UInputMappingContext* GlobalMappingContext;
+
 	// Dice
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputMappingContext* DiceRollerMappingContext;

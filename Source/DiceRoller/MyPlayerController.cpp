@@ -36,6 +36,7 @@ void AMyPlayerController::BeginPlay()
 	
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 	{
+		Subsystem->AddMappingContext(GlobalMappingContext, 1);
 		Subsystem->AddMappingContext(DiceRollerMappingContext,0);
 	}
 }

@@ -17,9 +17,16 @@ class DICEROLLER_API UMyUserWidget : public UUserWidget
 protected:
 	virtual void NativeConstruct() override;
 
+	// Add Dice
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional))
+	class UButton* AddD6;
+
+
+
+	// Camera 
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	class UButton* CameraMode;
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional))
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	class UButton* CameraHome;
 
 	UFUNCTION()
