@@ -8,7 +8,7 @@
 #include "MyGameModeBase.generated.h"
 
 /**
- * 
+ * Custom subclass of GameModeBase. Handles setting default PlayerController/Pawn classes and UI initialization.
  */
 UCLASS(Blueprintable)
 class DICEROLLER_API AMyGameModeBase : public AGameModeBase

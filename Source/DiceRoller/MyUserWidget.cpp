@@ -11,6 +11,7 @@
 void UMyUserWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
+
 	if (CameraMode != nullptr)
 	{
 		CameraMode->OnClicked.AddUniqueDynamic(this, &UMyUserWidget::ToggleCameraMode);
@@ -20,6 +21,7 @@ void UMyUserWidget::NativeConstruct()
 		CameraHome->OnClicked.AddUniqueDynamic(this, &UMyUserWidget::CameraGoHome);
 	}
 }
+
 
 void UMyUserWidget::ToggleCameraMode()
 {

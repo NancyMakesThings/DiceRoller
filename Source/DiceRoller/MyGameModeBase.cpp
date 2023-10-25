@@ -9,7 +9,7 @@ AMyGameModeBase::AMyGameModeBase()
 {
     UE_LOG(LogTemp, Warning, TEXT("MyGameModeBase Constructor"));
 
-    // Overwritten in Blueprint child class to link BP and C++
+    // Overwritten in Blueprint child class to link BP and C++.
     PlayerControllerClass = APlayerController::StaticClass();
     DefaultPawnClass = APlayerCamera::StaticClass();
    
@@ -17,6 +17,8 @@ AMyGameModeBase::AMyGameModeBase()
 
 void AMyGameModeBase::BeginPlay()
 {
+    UE_LOG(LogTemp, Warning, TEXT("MyGameModeBase BeginPlay"));
+
     Super::BeginPlay();
     ChangeMenuWidget(StartingWidgetClass);
 }

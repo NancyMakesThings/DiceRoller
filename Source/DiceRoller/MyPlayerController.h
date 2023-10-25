@@ -28,6 +28,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Components")
 	UPhysicsHandleComponent* GetPhysicsHandle() const;
 
+	UInputMappingContext* GetGlobalMappingContext() const;
 	UInputMappingContext* GetDiceMappingContext() const;
 	UInputMappingContext* GetCameraMappingContext() const;
 

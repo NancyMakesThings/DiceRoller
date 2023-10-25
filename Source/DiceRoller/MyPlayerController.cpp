@@ -8,6 +8,7 @@
 #include "Dice.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "PlayerCamera.h"
+#include "MyGameInstance.h"
 
 AMyPlayerController::AMyPlayerController()
 {
@@ -34,11 +35,21 @@ void AMyPlayerController::BeginPlay()
 	inputMode.SetHideCursorDuringCapture(false);
 	SetInputMode(inputMode);
 	
+	// Set mapping contexts
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 	{
 		Subsystem->AddMappingContext(GlobalMappingContext, 1);
 		Subsystem->AddMappingContext(DiceRollerMappingContext,0);
 	}
+	/*
+	// Create dynamic material instances and assign to preview dice
+	if (UMyGameInstance* GameInstance = CastChecked<UMyGameInstance>(GetGameInstance()))
+	{
+		GameInstance->PreviewDynMatDiceFace = UMaterialInstanceDynamic::Create(GameInstance->CurrentMatDiceFace, this);
+		GameInstance->PreviewDynMatDiceNum = UMaterialInstanceDynamic::Create(GameInstance->CurrentMatDiceNum, this);
+		GameInstance->PreviewDynMatTray = UMaterialInstanceDynamic::Create(GameInstance->CurrentMatTray, this);
+	}
+	*/
 }
 
 // Called every frame
@@ -64,6 +75,11 @@ void AMyPlayerController::Tick(float DeltaTime)
 UPhysicsHandleComponent* AMyPlayerController::GetPhysicsHandle() const
 {
 	return PhysicsHandle;
+}
+
+UInputMappingContext* AMyPlayerController::GetGlobalMappingContext() const
+{
+	return GlobalMappingContext;
 }
 
 UInputMappingContext* AMyPlayerController::GetDiceMappingContext() const
