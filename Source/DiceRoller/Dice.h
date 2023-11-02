@@ -33,4 +33,7 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void RandomFall();
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateMesh(UStaticMesh* NewMesh);
 };

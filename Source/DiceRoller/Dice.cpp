@@ -42,6 +42,11 @@ void ADice::RandomFall()
 	DiceMesh->AddAngularImpulseInDegrees(Impulse, NAME_None, true);
 }
 
+void ADice::UpdateMesh(UStaticMesh* NewMesh)
+{
+	DiceMesh->SetStaticMesh(NewMesh);
+}
+
 // Called every frame
 void ADice::Tick(float DeltaTime)
 {

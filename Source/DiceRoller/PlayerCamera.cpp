@@ -23,6 +23,11 @@ APlayerCamera::APlayerCamera()
 	CameraComp->SetupAttachment(SpringArmComp, USpringArmComponent::SocketName);
 
 	// Assign variables
+	StartLocation = FVector(0.0f, 0.0f, 0.0f);
+	StartRotation = FRotator(-90.0f, 0.0f, 0.0f);
+	HomeLocation = FVector(0.0f, 0.0f, 250.0f);
+	StartArmLength = 2000.0f;
+
 	SpringArmComp->SetRelativeLocationAndRotation(StartLocation, StartRotation);
 	SpringArmComp->TargetArmLength = StartArmLength;
 	SpringArmComp->bEnableCameraLag = true;
@@ -30,6 +35,8 @@ APlayerCamera::APlayerCamera()
 	bUseControllerRotationPitch = true;
 	bUseControllerRotationRoll = true;
 	bUseControllerRotationYaw = true;
+
+
 }
 
 void APlayerCamera::Zoom(const FInputActionValue& Value)

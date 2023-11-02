@@ -40,10 +40,10 @@ protected:
 	UCameraComponent* CameraComp;
 	
 	// Camera variables
-	const FVector StartLocation = FVector(0.0f, 0.0f, 0.0f); // TODO: change these to defines?
-	const FRotator StartRotation = FRotator(-90.0f, 0.0f, 0.0f);
-	const FVector HomeLocation = FVector(0.0f, 0.0f, 250.0f);
-	const float StartArmLength = 2000.0f;
+	FVector StartLocation;
+	FRotator StartRotation;
+	FVector HomeLocation;
+	float StartArmLength;
 	const float MaxX = 2000.0f;
 	const float MinX = -2000.0f;
 	const float MaxY = 2000.0f;
