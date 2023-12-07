@@ -5,6 +5,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/SceneCaptureComponent2D.h"
 #include "MyGameInstance.h"
+#include "Engine/ObjectLibrary.h"
+#include "Dice.h"
 
 // Sets default values
 APreview::APreview()
@@ -63,3 +65,15 @@ void APreview::UpdateDiceMesh(UStaticMesh* NewMesh)
     MeshDice->SetStaticMesh(NewMesh);
 }
 
+void APreview::UpdateDiceFaceMat()
+{
+    UE_LOG(LogTemp, Warning, TEXT("APreview UpdateDiceFaceMat"));
+
+    // Set preview materials to dynamic materials
+    if (UMyGameInstance* Game = CastChecked<UMyGameInstance>(GetGameInstance()))
+    {
+        MeshDice->SetMaterial(0, Game->PreviewDynMatDiceFace);
+    }
+
+
+}

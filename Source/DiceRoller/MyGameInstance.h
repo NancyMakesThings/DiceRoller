@@ -16,6 +16,7 @@ class UObjectLibrary;
  * Custom subclass of GameInstance. 
  * Handles material and mesh selections (persistent throughout game instance)
  */
+
 UCLASS()
 class DICEROLLER_API UMyGameInstance : public UGameInstance
 {
@@ -56,8 +57,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 	DiceType PreviewDiceType;
 
+	// Generate asset data
+	UFUNCTION(BlueprintCallable)
+	void GetAssetData(TArray<FAssetData> &AssetDatas, TArray<FString>& StringDatas, const FString &Path);
+
+	UFUNCTION(BlueprintCallable)
+	TArray<FString> GetNamesMatDiceFace() const;
+
+	UPROPERTY(BlueprintReadOnly)
+	TArray<FAssetData> AssetDataMatDiceFace;
+
 protected:
 	virtual void Init() override;
+
+	TArray<FString> NamesMatDiceFace;
 
 
 };

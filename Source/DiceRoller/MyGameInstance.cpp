@@ -22,6 +22,39 @@ void UMyGameInstance::Init()
 	PreviewDynMatDiceFace = UMaterialInstanceDynamic::Create(CurrentMatDiceFace, this);
 	PreviewDynMatDiceNum = UMaterialInstanceDynamic::Create(CurrentMatDiceNum, this);
 	PreviewDynMatTray = UMaterialInstanceDynamic::Create(CurrentMatTray, this);
+
+    // Get material assets
+    
+    GetAssetData(AssetDataMatDiceFace, NamesMatDiceFace, "/Game/DiceRoller/Core/Dice/Materials/Face");
 	
 }
 
+void UMyGameInstance::GetAssetData(TArray<FAssetData> &AssetDatas, TArray<FString> &Names, const FString &Path)
+{
+    UE_LOG(LogTemp, Warning, TEXT("MyGameInstance GetAssetData"));
+
+    UObjectLibrary* ObjectLibrary;
+    ObjectLibrary = UObjectLibrary::CreateLibrary(UMaterialInstance::StaticClass(), true, true);
+    //ObjectLibrary->AddToRoot();
+    //ObjectLibrary->LoadAssetDataFromPath("/Game/DiceRoller/Core/Dice");
+    ObjectLibrary->LoadAssetDataFromPath(Path);
+    ObjectLibrary->GetAssetDataList(AssetDatas);
+
+    UE_LOG(LogTemp, Warning, TEXT("MyGameInstance Post GetAssetDataList"));
+
+    for (FAssetData& AssetData : AssetDatas)
+    {
+        FString SplitOn = "_";
+        FString Left, Right;
+        AssetData.AssetName.ToString().Split(SplitOn, &Left, &Right);
+        Names.Add(Right);
+
+        UE_LOG(LogTemp, Warning, TEXT("Asset: %s"), *Right);
+    }
+
+}
+
+TArray<FString> UMyGameInstance::GetNamesMatDiceFace() const
+{
+    return NamesMatDiceFace;
+}

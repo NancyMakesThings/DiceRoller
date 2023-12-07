@@ -49,5 +49,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateDiceMesh(UStaticMesh* NewMesh);
 
+	// Materials library handling
+	UFUNCTION(BlueprintCallable)
+	void UpdateDiceFaceMat();
+
 
 };
