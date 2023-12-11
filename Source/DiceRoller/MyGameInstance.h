@@ -4,8 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "MeshStyle.h"
-#include "DiceType.h"
+#include "DiceProperties.h"
 #include "MyGameInstance.generated.h"
 
 // Forward declarations
@@ -23,54 +22,8 @@ class DICEROLLER_API UMyGameInstance : public UGameInstance
 	GENERATED_BODY()
 
 public:
-	UMyGameInstance();
 
-	// Current materials
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Materials")
-	UMaterialInterface* CurrentMatDiceFace;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Materials")
-	UMaterialInterface* CurrentMatDiceNum;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Materials")
-	UMaterialInterface* CurrentMatTray;
-	
-	// Dynamic material instances for preview meshes in settings
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Materials")
-	UMaterialInstanceDynamic* PreviewDynMatDiceFace;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Materials")
-	UMaterialInstanceDynamic* PreviewDynMatDiceNum;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Materials")
-	UMaterialInstanceDynamic* PreviewDynMatTray;
-
-	// Current mesh style
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
-	MeshStyle CurrentMeshStyle;
-
-	// Preview mesh style
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
-	MeshStyle PreviewMeshStyle;
-
-	// Preview dice type
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
-	DiceType PreviewDiceType;
-
-	// Generate asset data
-	UFUNCTION(BlueprintCallable)
-	void GetAssetData(TArray<FAssetData> &AssetDatas, TArray<FString>& StringDatas, const FString &Path);
-
-	UFUNCTION(BlueprintCallable)
-	TArray<FString> GetNamesMatDiceFace() const;
-
-	UPROPERTY(BlueprintReadOnly)
-	TArray<FAssetData> AssetDataMatDiceFace;
-
-protected:
-	virtual void Init() override;
-
-	TArray<FString> NamesMatDiceFace;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
+	FDiceProperties CurrentProp;
 
 };

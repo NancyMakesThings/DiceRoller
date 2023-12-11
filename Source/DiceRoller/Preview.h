@@ -4,11 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "DiceProperties.h"
+#include "DiceType.h"
 #include "Preview.generated.h"
 
 // Forward declarations
 class USceneCaptureComponent2D;
 class USpringArmComponent;
+
 
 UCLASS()
 class DICEROLLER_API APreview : public AActor
@@ -18,6 +21,13 @@ class DICEROLLER_API APreview : public AActor
 public:	
 	// Sets default values for this actor's properties
 	APreview();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
+	FDiceProperties PreviewProp;
+
+	// Preview dice type
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
+	DiceType DiceType;
 
 protected:
 	// Called when the game starts or when spawned
@@ -47,11 +57,29 @@ public:
 
 	// Update mesh
 	UFUNCTION(BlueprintCallable)
-	void UpdateDiceMesh(UStaticMesh* NewMesh);
+	void UpdateMeshStyle(MeshStyle MeshName, UStaticMesh* NewMesh);
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateColorDiceFace(const FVector & Color);
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateColorDiceNum(const FVector & Color);
 
 	// Materials library handling
 	UFUNCTION(BlueprintCallable)
-	void UpdateDiceFaceMat();
+	void UpdateMatDiceFace(UMaterialInterface* newMat);
+
+	// Generate asset data
+	UFUNCTION(BlueprintCallable)
+	void GetAssetData(TArray<FAssetData>& AssetDatas, TArray<FString>& StringDatas, const FString& Path);
+
+	UPROPERTY(BlueprintReadOnly)
+	TArray<FAssetData> AssetDataMatDiceFace;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Preview")
+	TArray<FString> NamesMatDiceFace;
+
+protected:
 
 
 };
