@@ -6,6 +6,9 @@
 #include "Blueprint/UserWidget.h"
 #include "MyUserWidget.generated.h"
 
+// forward declarations
+class UComboBoxString;
+
 /**
  * 
  */
@@ -30,4 +33,8 @@ protected:
 	UFUNCTION()
 	void CameraGoHome();
 
+	// Dropdown menu handling
+	UFUNCTION(BlueprintCallable)
+	void PopulateDropdownMenu(const TArray<FString> & Names, const UMaterialInstanceDynamic * const Mat, UComboBoxString * ComboBox);
+	
 };

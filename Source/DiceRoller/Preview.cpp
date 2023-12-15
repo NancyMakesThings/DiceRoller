@@ -40,19 +40,16 @@ void APreview::BeginPlay()
     UE_LOG(LogTemp, Warning, TEXT("Preview BeginPlay, set up dynamic materials"));
 
     // Create dynamic material instances and set preview materials to dynamic materials
-    if (UMyGameInstance* Game = CastChecked<UMyGameInstance>(GetGameInstance()))
-    {
-        PreviewProp.MatDiceFace = UMaterialInstanceDynamic::Create(Game->CurrentProp.MatDiceFace, this);
-        PreviewProp.MatDiceNum = UMaterialInstanceDynamic::Create(Game->CurrentProp.MatDiceNum, this);
-        PreviewProp.MatTray = UMaterialInstanceDynamic::Create(Game->CurrentProp.MatTray, this);
+    UpdatePreviewProp();
 
-        MeshDice->SetMaterial(0, PreviewProp.MatDiceFace);
-        MeshDice->SetMaterial(1, PreviewProp.MatDiceNum);
-        MeshTray->SetMaterial(0, PreviewProp.MatTray);
-    }
+    MeshDice->SetMaterial(0, PreviewProp.MatDiceFace);
+    MeshDice->SetMaterial(1, PreviewProp.MatDiceNum);
+    MeshTray->SetMaterial(0, PreviewProp.MatTray);
 
     // Get material assets
     GetAssetData(AssetDataMatDiceFace, NamesMatDiceFace, "/Game/DiceRoller/Core/Dice/Materials/Face");
+    GetAssetData(AssetDataMatDiceNum, NamesMatDiceNum, "/Game/DiceRoller/Core/Dice/Materials/Number");
+    GetAssetData(AssetDataMatTray, NamesMatTray, "/Game/DiceRoller/Core/Tray/Materials/Face");
 
     // Set up scene capture components
     SceneCaptureDice->ShowOnlyComponent(MeshDice);
@@ -67,13 +64,41 @@ void APreview::Tick(float DeltaTime)
 
 }
 
+void APreview::UpdatePreviewProp()
+{
+    if (UMyGameInstance* Game = CastChecked<UMyGameInstance>(GetGameInstance()))
+    {
+        PreviewProp.MeshStyle = Game->CurrentProp.MeshStyle;
+
+        if (UMaterialInstanceDynamic* Mat = Cast<UMaterialInstanceDynamic>(Game->CurrentProp.MatDiceFace))
+        {
+            PreviewProp.MatDiceFace = UMaterialInstanceDynamic::Create(Mat->Parent, this);
+            PreviewProp.ColorDiceFace = Game->CurrentProp.ColorDiceFace;
+        }
+
+        if (UMaterialInstanceDynamic* Mat = Cast<UMaterialInstanceDynamic>(Game->CurrentProp.MatDiceNum))
+        {
+            PreviewProp.MatDiceNum = UMaterialInstanceDynamic::Create(Mat->Parent, this);
+            PreviewProp.ColorDiceNum = Game->CurrentProp.ColorDiceNum;
+        }
+
+        if (UMaterialInstanceDynamic* Mat = Cast<UMaterialInstanceDynamic>(Game->CurrentProp.MatTray))
+        {
+            PreviewProp.MatTray = UMaterialInstanceDynamic::Create(Mat->Parent, this);
+            PreviewProp.ColorTray = Game->CurrentProp.ColorTray;
+        }
+
+    }
+
+}
+
 void APreview::UpdateMeshStyle(MeshStyle MeshName, UStaticMesh* NewMesh)
 {
     PreviewProp.MeshStyle = MeshName;
     MeshDice->SetStaticMesh(NewMesh);
 }
 
-void APreview::UpdateColorDiceFace(const FVector & Color)
+void APreview::UpdateColorDiceFace(const FLinearColor & Color)
 {
     PreviewProp.ColorDiceFace = Color;
     if (UMaterialInstanceDynamic* Mat = Cast<UMaterialInstanceDynamic>(PreviewProp.MatDiceFace))
@@ -83,10 +108,19 @@ void APreview::UpdateColorDiceFace(const FVector & Color)
     }
 }
 
-void APreview::UpdateColorDiceNum(const FVector & Color)
+void APreview::UpdateColorDiceNum(const FLinearColor & Color)
 {
     PreviewProp.ColorDiceNum = Color;
     if (UMaterialInstanceDynamic* Mat = Cast<UMaterialInstanceDynamic>(PreviewProp.MatDiceNum))
+    {
+        Mat->SetVectorParameterValue("BaseColor", Color);
+    }
+}
+
+void APreview::UpdateColorTray(const FLinearColor& Color)
+{
+    PreviewProp.ColorTray = Color;
+    if (UMaterialInstanceDynamic* Mat = Cast<UMaterialInstanceDynamic>(PreviewProp.MatTray))
     {
         Mat->SetVectorParameterValue("BaseColor", Color);
     }
@@ -98,14 +132,41 @@ void APreview::UpdateMatDiceFace(UMaterialInterface* NewMat)
 
     // Set preview materials to dynamic materials
     PreviewProp.MatDiceFace = NewMat;
-
+    
     if (UMyGameInstance* Game = CastChecked<UMyGameInstance>(GetGameInstance()))
     {
         MeshDice->SetMaterial(0, PreviewProp.MatDiceFace);
     }
+    
 
     UpdateColorDiceFace(PreviewProp.ColorDiceFace);
 
+}
+
+void APreview::UpdateMatDiceNum(UMaterialInterface* NewMat)
+{
+    // Set preview materials to dynamic materials
+    PreviewProp.MatDiceNum = NewMat;
+
+    if (UMyGameInstance* Game = CastChecked<UMyGameInstance>(GetGameInstance()))
+    {
+        MeshDice->SetMaterial(1, PreviewProp.MatDiceNum);
+    }
+
+    UpdateColorDiceNum(PreviewProp.ColorDiceNum);
+}
+
+void APreview::UpdateMatTray(UMaterialInterface* NewMat)
+{
+    // Set preview materials to dynamic materials
+    PreviewProp.MatTray = NewMat;
+
+    if (UMyGameInstance* Game = CastChecked<UMyGameInstance>(GetGameInstance()))
+    {
+        MeshTray->SetMaterial(0, PreviewProp.MatTray);
+    }
+
+    UpdateColorTray(PreviewProp.ColorTray);
 }
 
 void APreview::GetAssetData(TArray<FAssetData>& AssetDatas, TArray<FString>& Names, const FString& Path)
@@ -123,9 +184,8 @@ void APreview::GetAssetData(TArray<FAssetData>& AssetDatas, TArray<FString>& Nam
 
     for (FAssetData& AssetData : AssetDatas)
     {
-        FString SplitOn = "_";
         FString Left, Right;
-        AssetData.AssetName.ToString().Split(SplitOn, &Left, &Right);
+        AssetData.AssetName.ToString().Split(TEXT("_"), &Left, &Right);
         Names.Add(Right);
 
         UE_LOG(LogTemp, Warning, TEXT("Asset: %s"), *Right);

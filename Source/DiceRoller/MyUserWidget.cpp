@@ -6,7 +6,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "MyPlayerController.h"
 #include "PlayerCamera.h"
-
+#include "Components/ComboBoxString.h"
 
 void UMyUserWidget::NativeConstruct()
 {
@@ -57,5 +57,19 @@ void UMyUserWidget::CameraGoHome()
 	{
 		Camera->Home();
 	}
+}
+
+void UMyUserWidget::PopulateDropdownMenu(const TArray<FString>& Names, const UMaterialInstanceDynamic * const Mat, UComboBoxString * ComboBox)
+{
+
+	for (FString elem : Names)
+	{
+		ComboBox->AddOption(elem); 
+	}
+	FString SplitOn = "_";
+	FString Left, Right;
+	Mat->Parent.GetName().Split(TEXT("_"), &Left, &Right);
+	ComboBox->SetSelectedOption(Right);
+
 }
 

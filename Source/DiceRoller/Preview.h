@@ -57,19 +57,30 @@ public:
 
 	// Update mesh
 	UFUNCTION(BlueprintCallable)
+	void UpdatePreviewProp();
+
+	UFUNCTION(BlueprintCallable)
 	void UpdateMeshStyle(MeshStyle MeshName, UStaticMesh* NewMesh);
 
 	UFUNCTION(BlueprintCallable)
-	void UpdateColorDiceFace(const FVector & Color);
+	void UpdateColorDiceFace(const FLinearColor & Color);
 
 	UFUNCTION(BlueprintCallable)
-	void UpdateColorDiceNum(const FVector & Color);
+	void UpdateColorDiceNum(const FLinearColor & Color);
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateColorTray(const FLinearColor& Color);
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateMatDiceFace(UMaterialInterface* NewMat);
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateMatDiceNum(UMaterialInterface* NewMat);
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateMatTray(UMaterialInterface* NewMat);
 
 	// Materials library handling
-	UFUNCTION(BlueprintCallable)
-	void UpdateMatDiceFace(UMaterialInterface* newMat);
-
-	// Generate asset data
 	UFUNCTION(BlueprintCallable)
 	void GetAssetData(TArray<FAssetData>& AssetDatas, TArray<FString>& StringDatas, const FString& Path);
 
@@ -78,6 +89,18 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Preview")
 	TArray<FString> NamesMatDiceFace;
+
+	UPROPERTY(BlueprintReadOnly)
+	TArray<FAssetData> AssetDataMatDiceNum;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Preview")
+	TArray<FString> NamesMatDiceNum;
+
+	UPROPERTY(BlueprintReadOnly)
+	TArray<FAssetData> AssetDataMatTray;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Preview")
+	TArray<FString> NamesMatTray;
 
 protected:
 

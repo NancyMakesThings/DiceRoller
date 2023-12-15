@@ -21,6 +21,11 @@ class DICEROLLER_API UMyGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 
+protected:
+	
+	virtual void Init() override;
+
+
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")

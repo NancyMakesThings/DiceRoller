@@ -10,6 +10,11 @@ struct FDiceProperties
 {
 	GENERATED_USTRUCT_BODY()
 
+
+	// Mesh style
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
+	MeshStyle MeshStyle;
+
 	// Materials
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
 	UMaterialInterface* MatDiceFace;
@@ -20,16 +25,14 @@ struct FDiceProperties
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
 	UMaterialInterface* MatTray;
 
-	// Mesh style
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
-	MeshStyle MeshStyle;
-
 	// Color
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
-	FVector ColorDiceFace;
+	FLinearColor ColorDiceFace;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
-	FVector ColorDiceNum;
+	FLinearColor ColorDiceNum;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
+	FLinearColor ColorTray;
 };
 
