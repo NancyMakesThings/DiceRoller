@@ -13,6 +13,10 @@
 //UE UI
 #include "Framework/Application/SlateApplication.h"
 
+//Input
+#include "UnrealClient.h"
+#include "GameFramework/PlayerInput.h"
+
 //Yippeee!
 #include "Kismet/GameplayStatics.h"
 
@@ -33,16 +37,16 @@
 #include "GameFramework/Character.h"
 
 //Skel
+#include "Engine/SkeletalMesh.h"
 #include "Components/SkeletalMeshComponent.h"
 
 //Static Mesh Vertex Positions and Other Geometry Info
 #include "Engine/StaticMesh.h"
 #include "StaticMeshDescription.h"
-
-
+#include "Components/StaticMeshComponent.h"
 
 //~~~ CreateStaticMeshAssetFromDynamicMesh ~~~
-#include "GeometryFramework/Public/Components/DynamicMeshComponent.h"
+#include "Runtime/GeometryFramework/Public/Components/DynamicMeshComponent.h"
 
 //Runtime
 //Engine\Plugins\Runtime\MeshModelingToolset\Source\ModelingComponents\Public\ModelingObjectsCreationAPI.h
@@ -56,6 +60,7 @@
 //~~~~ End CreateStaticMeshAssetFromDynamicMesh ~~~
 
 
+#include "TextureResource.h"
 
 //~~~ Image Wrapper ~~~
 #include "ImageUtils.h"
@@ -278,7 +283,7 @@ UStaticMesh* UVictoryBPFunctionLibrary::CreateStaticMeshAssetFromDynamicMesh(
 	{
 		Status = "Could not create the specified directory tree";
 		Success = false;
-		return false;
+		return nullptr;
 	}
 	
 	//Remove ext before sending to AssetUtils
@@ -358,7 +363,7 @@ UStaticMesh* UVictoryBPFunctionLibrary::CreateStaticMeshAssetFromDynamicMesh(
 	{
 		Status = "UE::AssetUtils::ECreateStaticMeshResult is ECreateModelingObjectResult::Failed_AssetCreationFailed";
 		Success = false;
-		return false;
+		return nullptr;
 	}
   
 	// End of code from PublicEditorModelingObjectsCreationAPI.cpp

@@ -8,5 +8,6 @@ enum class MeshStyle : uint8
 {
 	Default,
 	Round,
-	Sharp
+	Sharp,
+	Smooth
 };
