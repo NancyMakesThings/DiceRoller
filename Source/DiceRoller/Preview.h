@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "DiceProperties.h"
+#include "Properties.h"
 #include "DiceType.h"
 #include "Preview.generated.h"
 
@@ -22,9 +22,6 @@ public:
 	// Sets default values for this actor's properties
 	APreview();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
-	FDiceProperties PreviewProp;
-
 	// Preview dice type
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
 	DiceType DiceType;
@@ -32,6 +29,32 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	// Properties
+	UPROPERTY(BlueprintReadOnly, Category = "Dice Properties")
+	FDiceProperties DiceProp;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Tray Properties")
+	FTrayProperties TrayProp;
+
+	// Materials library
+	UPROPERTY(BlueprintReadOnly)
+	TArray<FAssetData> AssetDataDiceMatFace;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Preview")
+	TArray<FString> NamesDiceMatFace;
+
+	UPROPERTY(BlueprintReadOnly)
+	TArray<FAssetData> AssetDataDiceMatNum;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Preview")
+	TArray<FString> NamesDiceMatNum;
+
+	UPROPERTY(BlueprintReadOnly)
+	TArray<FAssetData> AssetDataTrayMat;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Preview")
+	TArray<FString> NamesTrayMat;
 
 public:	
 	// Called every frame
@@ -55,54 +78,36 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Preview")
 	UStaticMeshComponent* MeshDice;
 
-	// Update mesh
+	// Update mesh to match current
 	UFUNCTION(BlueprintCallable)
-	void UpdatePreviewProp();
+	void UpdateDiceProp();
 
+	UFUNCTION(BlueprintCallable)
+	void UpdateTrayProp();
+
+	// Update properties
 	UFUNCTION(BlueprintCallable)
 	void UpdateMeshStyle(MeshStyle MeshName, UStaticMesh* NewMesh);
 
 	UFUNCTION(BlueprintCallable)
-	void UpdateColorDiceFace(const FLinearColor & Color);
+	void UpdateDiceMatFace(UMaterialInterface* NewMat);
 
 	UFUNCTION(BlueprintCallable)
-	void UpdateColorDiceNum(const FLinearColor & Color);
+	void UpdateDiceMatNum(UMaterialInterface* NewMat);
 
 	UFUNCTION(BlueprintCallable)
-	void UpdateColorTray(const FLinearColor& Color);
+	void UpdateDiceColorFace(const FLinearColor & Color);
 
 	UFUNCTION(BlueprintCallable)
-	void UpdateMatDiceFace(UMaterialInterface* NewMat);
+	void UpdateDiceColorNum(const FLinearColor & Color);
 
 	UFUNCTION(BlueprintCallable)
-	void UpdateMatDiceNum(UMaterialInterface* NewMat);
+	void UpdateTrayMat(UMaterialInterface* NewMat);
 
 	UFUNCTION(BlueprintCallable)
-	void UpdateMatTray(UMaterialInterface* NewMat);
+	void UpdateTrayColor(const FLinearColor& Color);
 
 	// Materials library handling
 	UFUNCTION(BlueprintCallable)
 	void GetAssetData(TArray<FAssetData>& AssetDatas, TArray<FString>& StringDatas, const FString& Path);
-
-	UPROPERTY(BlueprintReadOnly)
-	TArray<FAssetData> AssetDataMatDiceFace;
-
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Preview")
-	TArray<FString> NamesMatDiceFace;
-
-	UPROPERTY(BlueprintReadOnly)
-	TArray<FAssetData> AssetDataMatDiceNum;
-
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Preview")
-	TArray<FString> NamesMatDiceNum;
-
-	UPROPERTY(BlueprintReadOnly)
-	TArray<FAssetData> AssetDataMatTray;
-
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Preview")
-	TArray<FString> NamesMatTray;
-
-protected:
-
-
 };

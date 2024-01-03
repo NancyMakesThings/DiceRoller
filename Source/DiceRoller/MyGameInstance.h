@@ -4,12 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "DiceProperties.h"
+#include "Properties.h"
 #include "MyGameInstance.generated.h"
 
 // Forward declarations
 class APreview;
 class UObjectLibrary;
+class UMySaveGame;
 
 /**
  * Custom subclass of GameInstance. 
@@ -21,14 +22,49 @@ class DICEROLLER_API UMyGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 
-protected:
+public:
 	
 	virtual void Init() override;
 
+protected: 
+
+	UPROPERTY(BlueprintReadOnly, Category = "Dice Properties")
+	FDiceProperties CurrentDiceProp;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Tray Properties")
+	FTrayProperties CurrentTrayProp;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Dice Properties")
+	TArray<FDiceProperties> CurrentPresets;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Save")
+	UMySaveGame* CurrentSave;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Save")
+	FString SaveName = "UserPresets";
 
 public:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
-	FDiceProperties CurrentProp;
+	// Setters and getters for protected variables
+	UFUNCTION(BlueprintCallable)
+	FDiceProperties GetCurrentDiceProp() const;
+	
+	UFUNCTION(BlueprintCallable)
+	FTrayProperties GetCurrentTrayProp() const;
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateCurrentDiceProp(const FDiceProperties & NewProp);
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateCurrentTrayProp(const FTrayProperties & NewProp);
+
+	UFUNCTION(BlueprintCallable)
+	void UpdatePreset(const FDiceProperties & NewProp, int Index);
+
+	UFUNCTION(BlueprintCallable)
+	bool LoadSave();
+
+	UFUNCTION(BlueprintCallable)
+	void WriteSave();
 
 };

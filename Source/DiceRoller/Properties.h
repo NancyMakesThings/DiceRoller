@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "MeshStyle.h"
-#include "DiceProperties.generated.h"
+#include "Properties.generated.h"
 
 // Handle dice properties
 USTRUCT(BlueprintType)
@@ -10,29 +10,35 @@ struct FDiceProperties
 {
 	GENERATED_USTRUCT_BODY()
 
-
 	// Mesh style
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
 	MeshStyle MeshStyle;
 
 	// Materials
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
-	UMaterialInterface* MatDiceFace;
+	UMaterialInterface* MatFace;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
-	UMaterialInterface* MatDiceNum;
+	UMaterialInterface* MatNum;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
-	UMaterialInterface* MatTray;
 
 	// Color
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
-	FLinearColor ColorDiceFace;
+	FLinearColor ColorFace;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
-	FLinearColor ColorDiceNum;
+	FLinearColor ColorNum;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
-	FLinearColor ColorTray;
 };
 
+USTRUCT(BlueprintType)
+struct FTrayProperties
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
+	UMaterialInterface* Mat;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
+	FLinearColor Color;
+};
