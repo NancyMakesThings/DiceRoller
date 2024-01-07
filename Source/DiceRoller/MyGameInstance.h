@@ -26,6 +26,8 @@ public:
 	
 	virtual void Init() override;
 
+	virtual void Shutdown() override;
+
 protected: 
 
 	UPROPERTY(BlueprintReadOnly, Category = "Dice Properties")
@@ -67,4 +69,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void WriteSave();
 
+	UFUNCTION(BlueprintCallable)
+	void CreateDynMatFromCurrent(bool PreviousSaveExists);
+
+	UFUNCTION(BlueprintCallable)
+	void SetDicePropSafe(FDiceProperties & PropIn);
 };

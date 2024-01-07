@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Properties.h"
+#include "DiceType.h"
 #include "Dice.generated.h"
 
 class UStaticMeshComponent;
@@ -24,7 +26,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice")
 	float AngularImpulseMagnitude;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice")
 	UStaticMeshComponent* DiceMesh;
 
 public:	
@@ -36,4 +38,11 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void UpdateMesh(UStaticMesh* NewMesh);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice")
+	FDiceProperties Properties;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice")
+	DiceType Type;
+	
 };

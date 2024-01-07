@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/SaveGame.h"
 #include "Properties.h"
+#include "DiceType.h"
 #include "MySaveGame.generated.h"
 
 /**
@@ -23,4 +24,11 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = "Tray Properties")
 	FTrayProperties SavedTray;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Dice Properties")
+	TArray<FDiceProperties> SavedDiceProp;
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Dice Properties")
+	TArray<DiceType> SavedDiceType;
+
 };

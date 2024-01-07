@@ -41,15 +41,7 @@ void AMyPlayerController::BeginPlay()
 		Subsystem->AddMappingContext(GlobalMappingContext, 1);
 		Subsystem->AddMappingContext(DiceRollerMappingContext,0);
 	}
-	/*
-	// Create dynamic material instances and assign to preview dice
-	if (UMyGameInstance* GameInstance = CastChecked<UMyGameInstance>(GetGameInstance()))
-	{
-		GameInstance->PreviewDynMatDiceFace = UMaterialInstanceDynamic::Create(GameInstance->CurrentMatDiceFace, this);
-		GameInstance->PreviewDynMatDiceNum = UMaterialInstanceDynamic::Create(GameInstance->CurrentMatDiceNum, this);
-		GameInstance->PreviewDynMatTray = UMaterialInstanceDynamic::Create(GameInstance->CurrentMatTray, this);
-	}
-	*/
+
 }
 
 // Called every frame

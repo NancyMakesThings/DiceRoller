@@ -6,6 +6,7 @@
 #include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Components/StaticMeshComponent.h"
+#include "MyGameInstance.h"
 
 // Sets default values
 ADice::ADice()
@@ -30,6 +31,12 @@ void ADice::BeginPlay()
 
 	Super::BeginPlay();
 	RandomFall();
+
+	// Set Dice Properties during spawn
+	if (UMyGameInstance* Game = CastChecked<UMyGameInstance>(GetGameInstance()))
+	{
+		Game->SetDicePropSafe(Properties);
+	}
 }
 
 void ADice::RandomFall()
