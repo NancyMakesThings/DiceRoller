@@ -31,4 +31,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Dice Properties")
 	TArray<DiceType> SavedDiceType;
 
+	UPROPERTY(BlueprintReadWrite, Category = "Camera Properties")
+	bool bHideCameraTooltip = false;
+
 };

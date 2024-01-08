@@ -20,7 +20,7 @@ class DICEROLLER_API UMyUserWidget : public UUserWidget
 protected:
 	virtual void NativeConstruct() override;
 
-	// Camera 
+	// Camera variables
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional))
 	class UButton* CameraMode;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional))
@@ -28,9 +28,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bCameraMode;
 
-	UFUNCTION()
+	// Camera functions
+	UFUNCTION(BlueprintCallable)
 	void ToggleCameraMode();
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void CameraGoHome();
 
 	// Dropdown menu handling
