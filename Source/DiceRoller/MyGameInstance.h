@@ -30,15 +30,6 @@ public:
 
 protected: 
 
-	UPROPERTY(BlueprintReadOnly, Category = "Dice Properties")
-	FDiceProperties CurrentDiceProp;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Tray Properties")
-	FTrayProperties CurrentTrayProp;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Dice Properties")
-	TArray<FDiceProperties> CurrentPresets;
-
 	UPROPERTY(BlueprintReadOnly, Category = "Save")
 	UMySaveGame* CurrentSave;
 
@@ -46,6 +37,15 @@ protected:
 	FString SaveName = "UserPresets";
 
 public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
+		FDiceProperties CurrentDiceProp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tray Properties")
+		FTrayProperties CurrentTrayProp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dice Properties")
+		TArray<FDiceProperties> CurrentPresets;
 
 	// Setters and getters for protected variables
 	UFUNCTION(BlueprintCallable)

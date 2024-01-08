@@ -15,7 +15,7 @@ ATray::ATray()
 void ATray::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	UE_LOG(LogTemp, Warning, TEXT("Tray BeginPlay"));	
 }
 
 // Called every frame
