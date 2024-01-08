@@ -34,4 +34,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Camera Properties")
 	bool bHideCameraTooltip = false;
 
+	UPROPERTY(BlueprintReadWrite, Category = "Dice Properties")
+	int DiceCount = 1; // game loads one die on start
+
+
 };
