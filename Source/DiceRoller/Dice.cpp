@@ -42,11 +42,12 @@ void ADice::BeginPlay()
 void ADice::RandomFall()
 {
 	UE_LOG(LogTemp, Warning, TEXT("ADice::RandomFall started"));
-	
+
 	// Add random angular impulse on dice drop
 	FVector Impulse = FVector(UKismetMathLibrary::RandomFloatInRange(-1, 1), UKismetMathLibrary::RandomFloatInRange(-1, 1), UKismetMathLibrary::RandomFloatInRange(-1, 1));
 	Impulse = Impulse * AngularImpulseMagnitude;
 	DiceMesh->AddAngularImpulseInDegrees(Impulse, NAME_None, true);
+
 }
 
 void ADice::UpdateMesh(UStaticMesh* NewMesh)

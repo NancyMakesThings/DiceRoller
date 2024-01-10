@@ -63,6 +63,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdatePreset(const FDiceProperties & NewProp, int Index);
 
+	// Save handling
 	UFUNCTION(BlueprintCallable)
 	bool LoadSave();
 
@@ -74,4 +75,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetDicePropSafe(FDiceProperties & PropIn);
+
+	// Camera 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bCameraMode;
 };

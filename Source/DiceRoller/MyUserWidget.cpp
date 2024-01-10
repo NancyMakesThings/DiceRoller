@@ -7,14 +7,15 @@
 #include "MyPlayerController.h"
 #include "PlayerCamera.h"
 #include "Components/ComboBoxString.h"
+#include "MyGameInstance.h"
 
 void UMyUserWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	if (CameraMode != nullptr)
+	if (Camera != nullptr)
 	{
-		CameraMode->OnClicked.AddUniqueDynamic(this, &UMyUserWidget::ToggleCameraMode);
+		Camera->OnClicked.AddUniqueDynamic(this, &UMyUserWidget::ToggleCameraMode);
 	}
 	if (CameraHome != nullptr)
 	{
@@ -31,19 +32,23 @@ void UMyUserWidget::ToggleCameraMode()
 	{
 		if (AMyPlayerController* PlayerController = Cast<AMyPlayerController>(GetOwningPlayer()))
 		{
-			if (bCameraMode)
+
+			if (UMyGameInstance* Game = CastChecked<UMyGameInstance>(GetGameInstance()))
 			{
-				UE_LOG(LogTemp, Warning, TEXT("ToggleCameraMode False"))
-				bCameraMode = false;
-				Subsystem->AddMappingContext(PlayerController->GetDiceMappingContext(), 0);
-				Subsystem->RemoveMappingContext(PlayerController->GetCameraMappingContext());
-			}
-			else
-			{
-				UE_LOG(LogTemp, Warning, TEXT("ToggleCameraMode True"))
-				bCameraMode = true;
-				Subsystem->AddMappingContext(PlayerController->GetCameraMappingContext(), 0);
-				Subsystem->RemoveMappingContext(PlayerController->GetDiceMappingContext());
+				if (Game->bCameraMode)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("ToggleCameraMode False"))
+					Game->bCameraMode = false;
+					Subsystem->AddMappingContext(PlayerController->GetDiceMappingContext(), 0);
+					Subsystem->RemoveMappingContext(PlayerController->GetCameraMappingContext());
+				}
+				else
+				{
+					UE_LOG(LogTemp, Warning, TEXT("ToggleCameraMode True"))
+					Game->bCameraMode = true;
+					Subsystem->AddMappingContext(PlayerController->GetCameraMappingContext(), 0);
+					Subsystem->RemoveMappingContext(PlayerController->GetDiceMappingContext());
+				}
 			}
 
 		}
@@ -53,9 +58,9 @@ void UMyUserWidget::ToggleCameraMode()
 
 void UMyUserWidget::CameraGoHome()
 {
-	if (APlayerCamera* Camera = Cast<APlayerCamera>(GetOwningPlayerPawn()))
+	if (APlayerCamera* PlayerCamera = Cast<APlayerCamera>(GetOwningPlayerPawn()))
 	{
-		Camera->Home();
+		PlayerCamera->Home();
 	}
 }
 

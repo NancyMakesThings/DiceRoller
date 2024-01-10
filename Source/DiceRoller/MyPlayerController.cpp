@@ -112,6 +112,7 @@ void AMyPlayerController::DiceDrag()
 	{
 		OriginalDistanceToObject = HitResult.Distance;
 		UPrimitiveComponent* HitComponent = HitResult.GetComponent();
+		HitComponent->SetSimulatePhysics(true);
 		PhysicsHandle->GrabComponentAtLocationWithRotation(HitComponent, NAME_None, HitComponent->GetCenterOfMass(), HitComponent->GetOwner()->GetActorRotation());
 	}
 }

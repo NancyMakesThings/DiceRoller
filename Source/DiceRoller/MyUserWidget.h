@@ -22,11 +22,9 @@ protected:
 
 	// Camera variables
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional))
-	class UButton* CameraMode;
+	class UButton* Camera;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional))
 	class UButton* CameraHome;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bCameraMode;
 
 	// Camera functions
 	UFUNCTION(BlueprintCallable)

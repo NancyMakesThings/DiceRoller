@@ -4,6 +4,7 @@
 #include "MyGameModeBase.h"
 #include "MyPlayerController.h"
 #include "PlayerCamera.h"
+#include "GameFramework/GameUserSettings.h"
 
 AMyGameModeBase::AMyGameModeBase()
 {
@@ -12,7 +13,16 @@ AMyGameModeBase::AMyGameModeBase()
     // Overwritten in Blueprint child class to link BP and C++.
     PlayerControllerClass = APlayerController::StaticClass();
     DefaultPawnClass = APlayerCamera::StaticClass();
-   
+
+    if (GEngine)
+    {
+        UGameUserSettings* MyGameSettings = GEngine->GetGameUserSettings();
+        MyGameSettings->SetFullscreenMode(EWindowMode::Windowed);
+        MyGameSettings->SetScreenResolution(FIntPoint(1280, 720));
+        MyGameSettings->SetVSyncEnabled(true);
+        MyGameSettings->ApplySettings(true);
+    }
+    
 }
 
 void AMyGameModeBase::BeginPlay()
